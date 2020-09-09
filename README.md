@@ -88,3 +88,10 @@ Now we will enable and start TeamCity using systemctl. Before we need to reload 
 systemctl enable teamcity
 
 systemctl start teamcity
+
+TeamCity web interface
+Now we will go to the web interface to continue our TeamCity installation. Go to ip-address:8111
+
+Step 1: Change the Data Directory
+
+Here we will change the data directory to /opt/teamcity/TeamCity/.BuildServer
