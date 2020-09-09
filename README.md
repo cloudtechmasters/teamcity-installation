@@ -27,15 +27,15 @@ Login into Database
 You can get into Postgres console by typing
 	  
     psql
-Create a sonarqubedb database
+Create a teamcitydb database
 	  
-    create database sonarqubedb;
-Create the sonarqube DB user with a strongly encrypted password
+    create database teamcitydb;
+Create the teamcity user with a strongly encrypted password
 	  
-    create user sonarqube with encrypted password 'Cloud#436';
-Next, grant all privileges to sonrqube user on sonarqubedb;
+    create user teamcity with encrypted password 'Cloud#436';
+Next, grant all privileges to teamcity user on teamcitydb
 	  
-    grant all privileges on database sonarqubedb to sonarqube
+    grant all privileges on database teamcitydb to teamcity;
 Exit the psql prompt using the following command
 	  
     \q
