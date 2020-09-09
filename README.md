@@ -89,18 +89,6 @@ systemctl enable teamcity
 
 systemctl start teamcity
 
-Configure postgresql
-Open /var/lib/pgsql/9.6/data/pg_hba.conf in your favourite editor and replace ident by md5.
-
-Create user and database in PostgreSQL
-Now we will create a user in PostgreSQL database for TeamCity.
-
-########################################
-create database teamcitydb;
-create user teamcity with encrypted password 'TeamCity#436';
-grant all privileges on database teamcitydb to teamcity;
-###################################################
-
 TeamCity web interface
 Now we will go to the web interface to continue our TeamCity installation. Go to ip-address:8111
 
