@@ -42,3 +42,49 @@ Exit the psql prompt using the following command
 Switch to your sudo user using the exit command
 	  
     exit
+Download TeamCity
+Firstly we will download the TeamCity tar archive from the official website.
+
+wget https://download.jetbrains.com/teamcity/TeamCity-2020.1.3.tar.gz
+
+tar xvf TeamCity-2020.1.3.tar.gz
+
+Install TeamCity
+Now we will install TeamCity.
+
+mkdir /opt/teamcity
+mv TeamCity /opt/teamcity
+
+Download PostgreSQL JDBC driver
+We need to download PostgreSQL JDBC driver in order to use PostgreSQL database for TeamCity. You can download it from this link also or use the following command to download via yum.
+
+mkdir -p /opt/teamcity/TeamCity/.BuildServer/lib/jdbc/
+https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.16/postgresql-42.2.16.jar
+
+wget https://jdbc.postgresql.org/download/postgresql-42.2.16.jar -P /opt/teamcity/TeamCity/.BuildServer/lib/jdbc/
+
+
+
+We will create a startup script to start teamcity. Create a new file in /etc/systemd/system/teamcity.service.
+
+vim /etc/systemd/system/teamcity.service
+
+[Unit]
+Description=TeamCity Server
+After=network.target
+
+[Service]
+Type=forking
+PIDFile=/opt/teamcity/TeamCity/logs/teamcity-server.pid
+; Make sure the CATALINA_PID env variable is setup in $TEAMCITY_HOME/bin/catalina.sh
+ExecStart=/opt/teamcity/TeamCity/bin/teamcity-server.sh start
+ExecStop=/opt/teamcity/TeamCity/bin/teamcity-server.sh stop
+
+[Install]
+WantedBy=multi-user.target
+Enable and Start TeamCity Services
+Now we will enable and start TeamCity using systemctl. Before we need to reload the daemon because we have created new service file.
+
+systemctl enable teamcity
+
+systemctl start teamcity
