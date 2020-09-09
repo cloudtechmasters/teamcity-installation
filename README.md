@@ -58,10 +58,10 @@ mv TeamCity /opt/teamcity
 Download PostgreSQL JDBC driver
 We need to download PostgreSQL JDBC driver in order to use PostgreSQL database for TeamCity. You can download it from this link also or use the following command to download via yum.
 
-mkdir -p /opt/teamcity/TeamCity/.BuildServer/lib/jdbc/
+mkdir -p /opt/teamcity/.BuildServer/lib/jdbc/
 https://repo1.maven.org/maven2/org/postgresql/postgresql/42.2.16/postgresql-42.2.16.jar
 
-wget https://jdbc.postgresql.org/download/postgresql-42.2.16.jar -P /opt/teamcity/TeamCity/.BuildServer/lib/jdbc/
+wget https://jdbc.postgresql.org/download/postgresql-42.2.16.jar -P /opt/teamcity/.BuildServer/lib/jdbc/
 
 
 
@@ -75,10 +75,10 @@ After=network.target
 
 [Service]
 Type=forking
-PIDFile=/opt/teamcity/TeamCity/logs/teamcity-server.pid
+PIDFile=/opt/teamcity/logs/teamcity-server.pid
 ; Make sure the CATALINA_PID env variable is setup in $TEAMCITY_HOME/bin/catalina.sh
-ExecStart=/opt/teamcity/TeamCity/bin/teamcity-server.sh start
-ExecStop=/opt/teamcity/TeamCity/bin/teamcity-server.sh stop
+ExecStart=/opt/teamcity/bin/teamcity-server.sh start
+ExecStop=/opt/teamcity/bin/teamcity-server.sh stop
 
 [Install]
 WantedBy=multi-user.target
@@ -89,9 +89,21 @@ systemctl enable teamcity
 
 systemctl start teamcity
 
+Configure postgresql
+Open /var/lib/pgsql/9.6/data/pg_hba.conf in your favourite editor and replace ident by md5.
+
+Create user and database in PostgreSQL
+Now we will create a user in PostgreSQL database for TeamCity.
+
+########################################
+create database teamcitydb;
+create user teamcity with encrypted password 'TeamCity#436';
+grant all privileges on database teamcitydb to teamcity;
+###################################################
+
 TeamCity web interface
 Now we will go to the web interface to continue our TeamCity installation. Go to ip-address:8111
 
 Step 1: Change the Data Directory
 
-Here we will change the data directory to /opt/teamcity/TeamCity/.BuildServer
+Here we will change the data directory to /opt/teamcity/.BuildServer
